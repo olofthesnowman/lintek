@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@theme static {
+  /* Primary accent colour #E1007A */
+  --color-magenta-50: #fef1f7;
+  --color-magenta-100: #fee5f0;
+  --color-magenta-200: #fecce3;
+  --color-magenta-300: #fda2ca;
+  --color-magenta-400: #fb68a7;
+  --color-magenta-500: #f43b87;
+  --color-magenta-600: #E1007A;
+  --color-magenta-700: #c8006b;
+  --color-magenta-800: #a50058;
+  --color-magenta-900: #89044b;
+  --color-magenta-950: #540029;
+}
