@@ -17,4 +17,20 @@
   --color-magenta-800: #a50058;
   --color-magenta-900: #89044b;
   --color-magenta-950: #540029;
+
+  /* Lintek Black #000000 */
+  --color-lintekblack-50: #ffffff;
+  --color-lintekblack-100: #f2f2f2;
+  --color-lintekblack-200: #d9d9d9;
+  --color-lintekblack-300: #bfbfbf;
+  --color-lintekblack-400: #a6a6a6;
+  --color-lintekblack-500: #8c8c8c;
+  --color-lintekblack-600: #737373;
+  --color-lintekblack-700: #595959;
+  --color-lintekblack-800: #404040;
+  --color-lintekblack-900: #000000;
+  --color-lintekblack-950: #000000;
 }
+
+/* Custom typography for article content */
+@plugin "@tailwindcss/typography";

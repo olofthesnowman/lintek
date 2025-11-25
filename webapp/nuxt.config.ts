@@ -7,15 +7,13 @@ export default defineNuxtConfig({
 
   ui: {
     theme: {
-      colors: ['magenta'],
+      colors: ['magenta', 'lintekblack'],
     },
   },
 
-  colorMode: {
-    preference: 'dark',
-    fallback: 'dark',
-    dataValue: 'dark',
-    classSuffix: '',
-    storageKey: 'nuxt-color-mode'
-  }
+  runtimeConfig: {
+    public: {
+      directusUrl: process.env.DIRECTUS_URL || 'https://cms.lintek.lysator.liu.se',
+    },
+  },
 })

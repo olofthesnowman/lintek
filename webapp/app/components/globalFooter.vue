@@ -19,7 +19,7 @@ const items: NavigationMenuItem[] = [{
 <template>
     <USeparator class="h-px" />
 
-    <UFooter>
+    <UFooter class="bg-neutral-900 text-neutral-50" data-theme="dark">
       <template #left>
         <p class="text-muted text-sm">
         © {{ new Date().getFullYear() }} LinTek
