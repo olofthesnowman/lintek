@@ -70,10 +70,9 @@ const getAuthors = async(userIds) => {
 
     // Map over the authors so they match Nuxt UI User type
     const authors = raw_authors.map((author) => ({
-        name: `${author.first_name} ${author.last_name}`,
         avatar: author.avatar ? {
             // Assuming Directus stores path in filename_disk or similar
-            src: author.avatar.filename_disk, 
+            src: `${config.public.directusUrl}/assets/${author.avatar}`, 
             alt: `${author.first_name} ${author.last_name}`,
         } : null,
     }));

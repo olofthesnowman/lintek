@@ -5,7 +5,7 @@
         <section class="w-full bg-black">
             <UContainer class="pt-12 flex flex-col relative">
                 <h1 class="text-5xl font-bold text-white">{{ article.title }}</h1>
-                <p class="text-muted"> Publicerad {{ article.formattedDate }}</p> 
+                <p class="text-muted"> {{ contentText[locale].published }} {{ article.formattedDate }}</p> 
             </UContainer>
             <UContainer class="relative">
               <div class="absolute bottom-0 left-1/2 -translate-x-1/2 bg-default content-[''] z-0 h-1/3 w-screen"></div>
@@ -18,8 +18,28 @@
             />
           </UContainer>
         </section>
-        <UContainer>
-          <div class="prose max-w-[80ch] mt-8" v-html="article.content"></div>
+        <UContainer class="grid grid-cols-3 gap-4 my-8">
+          <div class="prose max-w-[80ch] col-span-2" v-html="article.content"></div>
+          <div>
+            <p class="text-muted mb-4">{{ contentText[locale].tags }}:</p>
+            <div class="flex gap-4">
+            <UBadge v-for="tag in article.tags" :key="tag" :label="tag" size="lg" color="neutral" />
+          </div>
+          <p class="mt-4 text-muted">{{ contentText[locale].authors }}:</p>
+          <div class="flex flex-col gap-4 mt-2">
+            <UUser
+              v-for="(author, index) in authors"
+              :key="index"
+              :name="author.name"
+              :description="author.title"
+              :avatar="{
+                src: author.avatar ? `${config.public.directusUrl}/assets/${author.avatar}` : null,
+                alt: author.name,
+                icon: 'i-lucide-user'
+              }"
+            />
+          </div>
+          </div>
         </UContainer>
     </div>
     <div v-else-if="article === null && rawArticle.status === 'success'">
@@ -51,12 +71,24 @@
 import { computed } from 'vue';
 
 // Use the existing locale composable
-const locale = useLanguage(); 
+const locale = useLanguage().locale; 
 const { $directus, $readItems } = useNuxtApp();
 const route = useRoute();
 
 const config = useRuntimeConfig();
 
+const contentText = {
+  'sv-SE': {
+    tags: 'Taggar',
+    published: 'Publicerad',
+    authors: 'Skribenter'
+  },
+  'en-US': {
+    tags: 'Tags',
+    published: 'Published',
+    authors: 'Writers'
+  }
+}
 
 // --- Author Fetching (Simplified) ---
 // You will need this for the full solution, including it here for completeness
@@ -68,12 +100,13 @@ const getAuthors = async(userIds) => {
     const raw_authors = await $directus.request(
         $readUsers({
             filter: { id: { _in: validUserIds } },
-            fields: ['first_name', 'last_name', 'avatar'], 
+            fields: ['first_name', 'last_name', 'avatar', 'title'], 
         })
     );
     return raw_authors.map((author) => ({
         name: `${author.first_name} ${author.last_name}`,
-        // ... avatar mapping
+        avatar: author.avatar,
+        title: author.title,
     }));
 };
 // ------------------------------------
@@ -88,7 +121,7 @@ const { data: rawArticle } = await useAsyncData('article-by-slug', async () => {
             },
             limit: 1, 
             // Fetch necessary relational fields (translations, user_created)
-            fields: ['date_created', 'image', 'user_created', 'user_updated', { translations: ['languages_code', 'title', 'description', 'content'] }] 
+            fields: ['date_created', 'image', 'user_created', 'user_updated', 'tags', { translations: ['languages_code', 'title', 'description', 'content'] }] 
         })
     );
     
@@ -102,7 +135,7 @@ const article = computed(() => {
 
     // Localize the translation
     const localizedTranslation = art.translations?.find(
-        t => t.languages_code === locale.locale.value
+        t => t.languages_code === locale.value
     );
 
     // Get authors asynchronously (use a different method if you need reactivity, but this is simple)
@@ -119,13 +152,18 @@ const article = computed(() => {
         content: localizedTranslation?.content || 'No content available',
         
         // Formatted Date
-        formattedDate: new Date(art.date_created).toLocaleDateString(locale.locale, {
+        formattedDate: new Date(art.date_created).toLocaleDateString(locale, {
             year: 'numeric', month: 'long', day: 'numeric'
         }),
         // Authors (You need a separate useFetch or a watcher to reliably get this data)
         // For simplicity, we skip the author fetch here and focus on the main error.
+        authors: [art.user_created, art.user_updated],
+
     };
 });
+
+const authors = ref([]);
+authors.value = await getAuthors(article.value.authors); // Initialize with empty for now
 </script>
 
 <style scoped>
