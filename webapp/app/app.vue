@@ -1,7 +1,9 @@
 <template>
   <UApp>
       <Header />
-      <NuxtPage />
+      <UMain>
+        <NuxtPage />
+      </UMain>
       <GlobalFooter />
     </UApp>
 </template>
