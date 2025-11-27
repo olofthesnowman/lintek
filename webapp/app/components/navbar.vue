@@ -1,24 +1,24 @@
 <template>
-    <header class="w-full px-6 py-4 sticky top-0 bg-lintekblack-900 text-neutral-50 z-999999">
+    <nav class="w-full px-6 py-4 sticky top-0 bg-lintekblack-900 text-neutral-50 z-999999">
         <UContainer class="grid grid-cols-3">
             <div class="flex items-center justify-self-start">
                 <NuxtLink to="/">
-                    <NuxtImg src="/LinTekLogo-darkmode.png" alt="LinTek" class="h-8" />
+                    <img src="/LinTekLogo-darkmode.png" alt="LinTek" class="h-8" />
                 </NuxtLink>
             </div>
             <!-- Use the computed property directly in the template -->
             <nav class="flex justify-center w-full">
-                <UNavigationMenu :items="computedMenuItems" :ui="{}" color="primary" />
+                <UNavigationMenu :items="computedMenuItems" color="neutral" variant="link" />
             </nav>
             <div class="flex items-center justify-self-end">
                 <!-- Assuming useLanguage() returns an object with 'locale' and 'toggleLocale' -->
-                <UButton variant="ghost" @click="locale.toggleLocale" icon="i-lucide-languages">
+                <UButton variant="link" @click="locale.toggleLocale" icon="i-lucide-languages" color="neutral">
                     {{ locale.locale }}
                 </UButton>
-                <UColorModeButton />
+                <UColorModeButton variant="link" />
             </div>
         </UContainer>
-    </header>
+      </nav>
 </template>
 
 <script setup>

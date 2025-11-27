@@ -19,7 +19,7 @@
           </UContainer>
         </section>
         <UContainer class="grid grid-cols-3 gap-4 my-8">
-          <div class="prose max-w-[80ch] col-span-2" v-html="article.content"></div>
+          <div class="prose dark:prose-invert max-w-[80ch] col-span-2" v-html="article.content"></div>
           <div>
             <p class="text-muted mb-4">{{ contentText[locale].tags }}</p>
             <div class="flex gap-4 flex-wrap">

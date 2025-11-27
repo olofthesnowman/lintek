@@ -1,11 +1,9 @@
 <template>
   <UApp>
-      <Header />
-      <UMain>
-        <NuxtPage />
-      </UMain>
-      <GlobalFooter />
-    </UApp>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </UApp>
 </template>
 
 <script setup>
@@ -15,9 +13,6 @@ const { data: global } = await useAsyncData('global', () => {
   return $directus.request($readItems('global'))
 })
 
-
-console.log($directus)
-console.log(global)
 useSeoMeta({
   title: global.value?.title || 'Lintek',
   description: global.value?.description || 'Linköpings studentteknologers studentkår!',
