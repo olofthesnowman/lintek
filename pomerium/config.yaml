@@ -1,6 +1,0 @@
-authenticate_service_url: https://authenticate.pomerium.app
-
-routes:
-  - from: https://lintek.lysator.liu.se
-    to: http://webapp:3000
-    allow_public_unauthenticated_access: true
