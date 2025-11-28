@@ -4,17 +4,17 @@
 
 @theme static {
   /* Primary accent colour #E1007A */
-  --color-magenta-50: #fef1f7;
-  --color-magenta-100: #fee5f0;
-  --color-magenta-200: #fecce3;
-  --color-magenta-300: #fda2ca;
-  --color-magenta-400: #fb68a7;
-  --color-magenta-500: #f43b87;
+  --color-magenta-50: #E1007A;
+  --color-magenta-100: #E1007A;
+  --color-magenta-200: #E1007A;
+  --color-magenta-300: #E1007A;
+  --color-magenta-400: #E1007A;
+  --color-magenta-500: #E1007A;
   --color-magenta-600: #E1007A;
-  --color-magenta-700: #c8006b;
-  --color-magenta-800: #a50058;
-  --color-magenta-900: #89044b;
-  --color-magenta-950: #540029;
+  --color-magenta-700: #E1007A;
+  --color-magenta-800: #E1007A;
+  --color-magenta-900: #E1007A;
+  --color-magenta-950: #E1007A;
 
   /* Lintek Black #000000 */
   --color-lintekblack-50: #ffffff;
@@ -32,3 +32,12 @@
 
 /* Custom typography for article content */
 @plugin "@tailwindcss/typography";
+
+.dark {
+  --ui-text-dimmed: var(--ui-color-neutral-500);
+  --ui-text-muted: var(--ui-color-neutral-400);
+  --ui-text-toned: var(--ui-color-neutral-300);
+  --ui-text: var(--ui-color-neutral-200);
+  --ui-text-highlighted: white;
+  --ui-text-inverted: var(--ui-color-neutral-900);
+}

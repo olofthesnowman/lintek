@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-const { $directus, $readItems, $readCollections } = useNuxtApp()
+const { $directus, $readItems } = useNuxtApp()
 
 const { data: global } = await useAsyncData('global', () => {
   return $directus.request($readItems('global'))

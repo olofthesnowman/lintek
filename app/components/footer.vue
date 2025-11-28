@@ -14,12 +14,26 @@ const items: NavigationMenuItem[] = [{
   to: 'https://lintek.liu.se/intro-till-karen/',
   target: '_blank'
 }]
+
+
+const columns = (await useGlobalNavigation()).footerColumns;
+
+
+
 </script>
 
 <template>
     <USeparator class="h-px" />
-
-    <UFooter class="bg-neutral-900 text-neutral-50" data-theme="dark">
+    <UFooter class="bg-black dark text-white">
+      <template #top>
+        <UContainer>
+          <UFooterColumns :columns="columns" class="dark">
+            <template #left>
+              <img src="/LinTek_subhead.png" alt="LinTek Logo" width="320" />
+            </template>
+          </UFooterColumns>
+        </UContainer>
+      </template>
       <template #left>
         <p class="text-muted text-sm">
         © {{ new Date().getFullYear() }} LinTek
@@ -28,12 +42,12 @@ const items: NavigationMenuItem[] = [{
         </p>
       </template>
 
-      <UNavigationMenu :items="items" variant="link" />
+      <NuxtLink to="https://www.lysator.liu.se/inhysningar/" class="flex items-center gap-2 mr-4">
+        Inhyhsta hos <NuxtImg src="https://www.lysator.liu.se/images/logo.svg" alt="Lysator" width="64" />
+      </NuxtLink>
 
       <template #right>
-        <NuxtLink to="https://www.lysator.liu.se/inhysningar/" class="flex items-center gap-2 mr-4">
-            Inhyhsta hos <NuxtImg src="https://www.lysator.liu.se/images/logo.svg" alt="Lysator" width="64" />
-        </NuxtLink>
+
         <UButton
           icon="i-simple-icons-instagram"
           color="neutral"

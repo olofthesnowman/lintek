@@ -14,7 +14,7 @@ export default defineAppConfig({
       variants: {
         active: {
           false: {
-            link: 'text-text-(--ui-color-neutral-500)'
+            link: 'text-neutral-400'
           }
         }
       },
@@ -25,11 +25,11 @@ export default defineAppConfig({
           variant: 'link',
           class: {
             link: [
-              'hover:text-(--ui-color-neutral-500)',
+              'hover:text-white',
               'transition-colors'
             ],
             childLink: [
-              'hover:text-(--ui-color-neutral-500)',
+              'hover:text-highlighted',
               'transition-colors'
             ],
             linkLeadingIcon: [
@@ -44,7 +44,7 @@ export default defineAppConfig({
           variant: 'link',
           orientation: 'horizontal',
           class: {
-            link: 'data-[state=open]:text-(--ui-color-neutral-500)',
+            link: 'data-[state=open]:text-white',
             linkLeadingIcon: 'group-data-[state=open]:text-default'
           }
         },

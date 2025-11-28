@@ -1,14 +1,14 @@
 <template>
   <UMain>
-    <article>
+    <article class="mb-20">
     <div v-if="article">
         <section class="w-full bg-black">
-            <UContainer class="pt-12 flex flex-col relative">
-                <h1 class="text-5xl leading-14 font-bold text-white">{{ article.title }}</h1>
+            <UContainer class="pt-12 flex flex-col relative dark">
+                <h1 class="text-5xl leading-14 font-bold text-highlighted">{{ article.title }}</h1>
                 <p class="text-muted text-base/8"> {{ contentText[locale].published }} {{ article.published }}</p> 
             </UContainer>
             <UContainer class="relative">
-              <div class="absolute bottom-0 left-1/2 -translate-x-1/2 bg-default content-[''] z-0 h-1/3 w-screen"></div>
+              <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-default content-[''] z-0 h-[35%] w-[110vw]"></div>
             <img
                     v-if="article.image"
                     :src="`${config.public.directusUrl}/assets/${article.image}`"
@@ -38,27 +38,6 @@
           </div>
         </UContainer>
     </div>
-    <!--<div v-else-if="article === null && rawArticle.status === 'success'">
-        <UContainer class="py-12 text-center">
-            <h1 class="text-3xl font-semibold">Article Not Found</h1>
-            <p class="text-gray-500 mt-2">The article with slug '{{ route.params.slug }}' could not be located.</p>
-        </UContainer>
-    </div>
-    <div v-else>
-        <section class="w-full bg-black">
-            <UContainer class="py-12">
-                <USkeleton class="w-3/4 h-12 mb-3 bg-gray-700" /> 
-                <USkeleton class="w-1/4 h-5 mb-6 bg-gray-700" /> 
-                <USkeleton class="my-6 rounded-lg" width="800" height="400" />
-            </UContainer>
-        </section>
-        <UContainer class="mt-8">
-            <USkeleton class="w-1/2 h-10 mb-4" />
-            <USkeleton class="w-full h-4 mb-2" />
-            <USkeleton class="w-full h-4 mb-2" />
-            <USkeleton class="w-3/4 h-4" />
-        </UContainer>
-    </div>-->
     </article>
   </UMain>
 </template>

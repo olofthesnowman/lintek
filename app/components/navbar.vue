@@ -8,62 +8,47 @@
             </div>
             <!-- Use the computed property directly in the template -->
             <nav class="flex justify-center w-full">
-                <UNavigationMenu :items="computedMenuItems" color="neutral" variant="link" />
+                <UNavigationMenu :items="menuItems" color="primary" variant="link" />
             </nav>
-            <div class="flex items-center justify-self-end">
-                <!-- Assuming useLanguage() returns an object with 'locale' and 'toggleLocale' -->
-                <UButton variant="link" @click="locale.toggleLocale" icon="i-lucide-languages" color="neutral">
-                    {{ locale.locale }}
-                </UButton>
-                <UColorModeButton variant="link" />
+            <div class="flex items-center justify-self-end dark">
+              <UButton
+                  color="neutral"
+                  variant="ghost"
+                  icon="i-lucide-search"
+                  @click="openSearch = true"
+                />
+                <UButton 
+                  variant="ghost" 
+                  @click="toggleLocale" 
+                  icon="i-lucide-languages" 
+                  color="neutral" 
+                />
+                <UColorModeButton 
+                  variant="ghost" 
+                />
             </div>
         </UContainer>
+          <UModal v-model:open="openSearch" size="lg" :closeable="true">
+          <template #content>
+            <UCommandPalette close :groups="[{ id: 'users', items: users }]" @update:open="openSearch = $event" placeholder="Sök på lintek!" />
+          </template>
+  </UModal>
       </nav>
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue';
+const { locale, toggleLocale } = useLanguage();
 
-// Use the composable you created earlier
-const locale = useLanguage(); // assuming you renamed useLanguage to useLocale
+const menuItems = (await useGlobalNavigation()).navbarItems;
 
-const { $directus, $readItems } = useNuxtApp();
-
-// 1. Fetch the data globally using useAsyncData
-const { data: globalData } = await useAsyncData('global-data', async () => {
-  return $directus.request(
-    $readItems('global', {
-      // Fetch all translations so we have them client-side
-      fields: [{ translations: ['*'] }],
-      limit: 1,
-    })
-  );
-});
-
-// 2. Create a COMPUTED property that REACTIVELY filters the data based on locale.
-const computedMenuItems = computed(() => {
-  // Ensure we have data before trying to filter
-  if (!globalData.value || !globalData.value.translations) {
-    return [];
+const openSearch = ref(false);
+const content = {
+  "se-SV": {
+    search: "Sök i LinTek",
+  },
+  "en-US": {
+    search: "Search in LinTek",
   }
+}
 
-  // Find the matching translation using the reactive locale value
-  const localizedData = globalData.value.translations.find(
-    item => item.languages_code === locale.locale.value // Access locale as a .value since it's a ref
-  );
-
-  if (localizedData && localizedData.navigation_menu) {
-    // Parse the JSON string if it exists
-    try {
-        return JSON.parse(localizedData.navigation_menu);
-    } catch (e) {
-        console.error("Error parsing navigation menu JSON:", e);
-        return [];
-    }
-  }
-
-  return [];
-});
-
-// We don't need items.value = ... because we use computedMenuItems directly in the template.
 </script>

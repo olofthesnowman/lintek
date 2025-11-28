@@ -19,6 +19,7 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.76",
     "@tailwindcss/typography": "^0.5.19"
   }
 }
