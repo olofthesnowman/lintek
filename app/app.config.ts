@@ -10,46 +10,6 @@ export default defineAppConfig({
       light: 'i-lucide-sun',
       dark: 'i-lucide-moon'
     },
-    navigationMenu: {
-      variants: {
-        active: {
-          false: {
-            link: 'text-neutral-400'
-          }
-        }
-      },
-      compoundVariants: [
-        {
-          disabled: false,
-          active: false,
-          variant: 'link',
-          class: {
-            link: [
-              'hover:text-white',
-              'transition-colors'
-            ],
-            childLink: [
-              'hover:text-highlighted',
-              'transition-colors'
-            ],
-            linkLeadingIcon: [
-              'group-hover:text-default',
-              'transition-colors'
-            ]
-          }
-        },
-        {
-          disabled: false,
-          active: false,
-          variant: 'link',
-          orientation: 'horizontal',
-          class: {
-            link: 'data-[state=open]:text-white',
-            linkLeadingIcon: 'group-data-[state=open]:text-default'
-          }
-        },
-      ]
-    }
   }
 })
 
