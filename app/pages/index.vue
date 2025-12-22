@@ -3,53 +3,127 @@
         <section class="w-full bg-black min-h-200">
             <UContainer class="dark">
                   <UPageHero
-                        title="Linköpings Teknologers Studentkår "
-                        description="Ta del av allt som LinTek har att erbjuda – från evenemang och nyheter till resurser och stöd för studenter vid Linköpings tekniska högskola."
-                        headline="Din kompis i studentlivet sedan 1971!"
+                        :headline="localizedHero.headline"
+                        :title="localizedHero.title"
+                        :description="localizedHero.description"
+                        :links="localizedHero.cta"
                         orientation="horizontal"
-                        :links="links"
                         color-mode="dark"
                     >
-                        <img
-                        src="/linus_utanbg.png"
+                    <img
+                        :src="`${directusURL}/assets/${localizedHero.cover}`"
                         alt="App screenshot"
                         class="ml-auto"
-                        />
+                    />
                  </UPageHero>
             </UContainer>    
         </section>
-        <UContainer class="flex flex-col justify-center items-center gap-50">
-            <section class="w-full flex  flex-col gap-8">
-                <h2 class="font-bold text-center">
-                    Vår verksamhet
-                </h2>
-                <UMarquee class="w-full" :ui="{root: '[--duration:40s]'}" pause-on-hover>
-                    <img src="https://lintek.liu.se/wp-content/uploads/2024/09/LinTekhjartanRityta-5_1@2x.png" alt="Teknik" class="h-24 mx-6" />
-                    <img src="https://lintek.liu.se/wp-content/uploads/2024/09/LinTekhjartanRityta-5_3@2x.png" alt="1" class="h-24 mx-6" />
-                    <img src="https://lintek.liu.se/wp-content/uploads/2024/09/LinTekhjartanRityta-5_4@2x.png" alt="2" class="h-24 mx-6" />
-                    <img src="https://lintek.liu.se/wp-content/uploads/2024/09/LinTekhjartanRityta-5@2x.png" alt="3" class="h-24 mx-6" />
-                    <img src="https://lintek.liu.se/wp-content/uploads/2024/09/LinTekhjartanRityta-5_5@2x.png" alt="4" class="h-24 mx-6" />
-                    <img src="https://lintek.liu.se/wp-content/uploads/2024/09/LinTekhjartanRityta-5_3@2x-1.png" alt="5" class="h-24 mx-6" />
-                </UMarquee>
-            </section>
+        <UContainer>
+            <UPageSection v-for="(block, index) in page?.blocks" :key="`block-${block.id || index}`" :class="index === 0 ? 'no-margin' : ''">
+                    <!-- Dynamic component -->
+                    <component
+                            v-if ="block.collection == 'block_marquee'"
+                            :is="getComponent(block.collection)"
+                            :items="block.item.items"
+                    />
+                    <component
+                            v-if ="block.collection == 'block_rich_content'"
+                            :is="getComponent(block.collection)"
+                            :content="block.item.translations.find((t: { languages_code: any; }) => t.languages_code === locale)?.content"
+                    />
+            </UPageSection>
             <ArticleGroup />
+              <UPageSection
+                    title="Beautiful Vue UI components"
+                    description="Nuxt UI provides a comprehensive suite of components and utilities to help you build beautiful and accessible web applications with Vue and Nuxt."
+                    icon="i-lucide-rocket"
+                    orientation="horizontal"
+                >
+                    <img
+                    src="https://picsum.photos/704/1294"
+                    width="352"
+                    height="400"
+                    alt="Illustration"
+                    class="w-full aspect-[4/3] rounded-lg"
+                />
+            </UPageSection>
+            <UPageSection
+                    title="Beautiful Vue UI components"
+                    description="Nuxt UI provides a comprehensive suite of components and utilities to help you build beautiful and accessible web applications with Vue and Nuxt."
+                    icon="i-lucide-rocket"
+                    orientation="horizontal"
+                    reverse
+            >
+                <img
+                    src="https://picsum.photos/704/1294"
+                    width="352"
+                    height="200"
+                    alt="Illustration"
+                    class="w-full aspect-[4/3] rounded-xl"
+                />
+            </UPageSection>
+            <UPageSection>
+                    <UPageCTA
+                        title="Bli en medlem!"
+                        description="Gå med i LinTek idag och dra nytta av alla förmåner som erbjuds våra medlemmar."
+                        :links="[
+                            { label: 'Get Started', to: '/docs/getting-started/introduction', variant: 'solid' },
+                            { label: 'Contact Sales', to: '/contact', variant: 'outline' }
+                        ]"
+                        variant="soft"
+                    >
+                </UPageCTA>
+            </UPageSection>
         </UContainer>
+        <pre class="bg-muted p-5 rounded hidden">{{ page }}</pre>
     </UMain>
 </template>
 
-<script setup>
-const links = ref([
-  {
-    label: 'Get started',
-    to: '/docs/getting-started',
-    icon: 'i-lucide-square-play'
-  },
-  {
-    label: 'Learn more',
-    to: '/docs/getting-started/theme/design-system',
-    color: 'neutral',
-    variant: 'subtle',
-    trailingIcon: 'i-lucide-arrow-right'
-  }
-])
+<style scoped>
+.no-margin > *:first-child {
+  margin-top: 1rem !important;
+  padding-top: 1rem !important;
+}
+</style>
+
+<script setup lang="ts">
+
+// Use the composable to fetch page data
+const { locale } = useLanguage();
+const { $directus, $readItems } = useNuxtApp();
+
+const directusURL = useRuntimeConfig().public.directusUrl;
+
+// Use useAsyncData to prevent component re-execution on locale changes
+const { data: page } = await useAsyncData('homepage', () => {
+    // try singletons API (Directus v10+ SDK)
+    return $directus.request($readItems('homepage', { 
+        limit: 1,
+        fields: [
+            '*', 
+            'hero.*',
+            'blocks.*',
+            'blocks.*.items.item.*',
+        ]
+    }))
+})
+
+const localizedHero = computed(() => {
+    if (!page.value) { console.log('No page data available'); return null; }
+    const translations = page.value.hero || [];
+    const translation = translations.find(t => t.languages_code === locale.value);
+    return translation || page.value.hero[0];
+});
+
+// Helper function to dynamically load components
+const getComponent = (collection: string) => {
+    const components: Record<string, any> = {
+        'block_marquee': defineAsyncComponent(() => import('~/components/block_marquee.vue')),
+        'block_cardgroup': defineAsyncComponent(() => import('~/components/block_cardgroup.vue')),
+        'block_rich_content': defineAsyncComponent(() => import('~/components/block_richcontent.vue')),
+        // Add more components as needed
+    }
+    
+    return components[collection] || 'div'
+}
 </script>

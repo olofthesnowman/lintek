@@ -3,7 +3,7 @@
         <UContainer class="grid grid-cols-3">
             <div class="flex items-center justify-self-start">
                 <NuxtLink to="/">
-                    <img src="/LinTekLogo-darkmode.png" alt="LinTek" class="h-8" />
+                    <img src="/LinTekLogo-darkmode.png" alt="LinTek" class="h-8 w-min-[100%]" />
                 </NuxtLink>
             </div>
             <!-- Use the computed property directly in the template -->
@@ -17,6 +17,7 @@
                   icon="i-lucide-search"
                   @click="openSearch = true"
                   class="dark"
+                  aria-label="search"
                 />
                 <UButton 
                   variant="ghost" 
@@ -24,10 +25,11 @@
                   icon="i-lucide-languages" 
                   color="neutral" 
                   class="dark"
+                  aria-label="language toggle"
                 />
                 <UColorModeButton 
                   variant="ghost"
-                  class="text-neutral-300 hover:bg-neutral-800 active:bg-neutral-800 transition-colors" 
+                  class="text-neutral-300 hover:bg-neutral-800 active:bg-neutral-800 transition-colors"
                 />
             </div>
         </UContainer>
@@ -37,6 +39,7 @@
               variant="ghost"
               icon="i-lucide-menu"
               @click="openHamburger = true"
+              name="navigation"
         />
     </nav>
     
@@ -57,6 +60,7 @@
                   icon="i-lucide-search"
                   :block="true"
                   @click="openSearch = true"
+                  aria-label="search"
                 />
                 <UButton 
                   variant="soft" 
@@ -64,6 +68,7 @@
                   icon="i-lucide-languages" 
                   color="neutral"
                   :block="true"
+                  aria-label="language toggle"
                 />
                 <UColorModeButton 
                   variant="soft"
@@ -94,9 +99,11 @@ const openHamburger = ref(false);
 const content = {
   "se-SV": {
     search: "Sök i LinTek",
+    langToggle: "Byt språk till engelska",
   },
   "en-US": {
     search: "Search in LinTek",
+    langToggle: "Switch language to Swedish",
   }
 }
 

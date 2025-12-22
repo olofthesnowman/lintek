@@ -16,4 +16,14 @@ export default defineNuxtConfig({
       directusUrl: process.env.DIRECTUS_URL || 'https://cms.lintek.lysator.liu.se',
     },
   },
+
+  ssr: true,
+
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: 'sv-SE',
+      },
+    },
+  },
 })

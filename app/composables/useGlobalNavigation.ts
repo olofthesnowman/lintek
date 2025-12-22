@@ -30,7 +30,7 @@ export const useGlobalNavigation = async () => {
         if (!localizedData?.navigation_menu) return [];
 
         try {
-            console.log("Parsing navigation menu JSON:", localizedData.navigation_menu);
+            //console.log("Parsing navigation menu JSON:", localizedData.navigation_menu);
             return JSON.parse(localizedData.navigation_menu);
         } catch (e) {
             console.error("Error parsing navigation menu JSON:", e);

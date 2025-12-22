@@ -11,6 +11,7 @@ export const useLanguage = () => {
   // 2. Define the explicit setter function (action)
   const setLocale = (newLocale: 'en-US' | 'sv-SE') => {
     locale.value = newLocale;
+    useHead({ htmlAttrs: { lang: newLocale } });
   };
 
   const toggleLocale = () => {
