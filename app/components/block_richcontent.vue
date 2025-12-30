@@ -1,5 +1,5 @@
 <template>
-    <div v-html="content" class="prose dark:prose-invert" />
+    <div v-html="content" class="prose dark:prose-invert max-w-[75ch]" />
 </template>
 
 <script lang="ts" setup>

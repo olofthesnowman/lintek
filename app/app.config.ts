@@ -10,5 +10,10 @@ export default defineAppConfig({
       light: 'i-lucide-sun',
       dark: 'i-lucide-moon'
     },
-  }
+  },
+
+  pageTransition: {
+    name: 'fade',
+    mode: 'out-in', // default
+  },
 })

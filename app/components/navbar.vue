@@ -1,5 +1,6 @@
 <template>
-    <nav class="w-full px-6 py-4 sticky flex top-0 bg-lintekblack-900 text-neutral-50 z-999999">
+    <div class="bg-black absolute top-0 left-0 right-0 h-20"></div>
+    <nav class="w-full px-6 py-4 sticky flex top-0 bg-black/90 backdrop-blur text-neutral-50 z-999999">
         <UContainer class="grid grid-cols-3">
             <div class="flex items-center justify-self-start">
                 <NuxtLink to="/">
@@ -26,6 +27,7 @@
                   color="neutral" 
                   class="dark"
                   aria-label="language toggle"
+                  :label="locale"
                 />
                 <UColorModeButton 
                   variant="ghost"
@@ -33,6 +35,29 @@
                 />
             </div>
         </UContainer>
+        <div class="flex lg:hidden items-center justify-self-end">
+              <UButton
+                  color="neutral"
+                  variant="ghost"
+                  icon="i-lucide-search"
+                  @click="openSearch = true"
+                  class="dark"
+                  aria-label="search"
+                />
+                <UButton 
+                  variant="ghost" 
+                  @click="toggleLocale" 
+                  icon="i-lucide-languages" 
+                  color="neutral" 
+                  class="dark"
+                  aria-label="language toggle"
+                  :label="locale"
+                />
+                <UColorModeButton 
+                  variant="ghost"
+                  class="text-neutral-300 hover:bg-neutral-800 active:bg-neutral-800 transition-colors"
+                />
+            </div>
         <UButton
               class="lg:hidden justify-self-end dark"
               color="neutral"
@@ -42,18 +67,52 @@
               name="navigation"
         />
     </nav>
-    
-    <UDrawer direction="right" inset v-model:open="openHamburger" class="w-full" >
-      <template #content>
-        <nav class="flex flex-col gap-6 mt-12 mb-6 mr-5 w-full">
-          <div class="bg-black rounded-xl flex flex-row place-content-between gap-4 p-5">
-            <img src="/LinTekLogo-darkmode.png" alt="LinTek" class="h-8 w-fit text-center" />
-            <img src="/linus_utanbg.png" alt="LinTek" class="h-8 w-fit text-center" />
-          </div>
+
+    <UModal v-model:open="openHamburger" class="w-full" :overlay="false" fullscreen :ui="{ header: 'bg-black' }" :transition="false" >
+      <template #header>
+        <div class="flex justify-between items-center w-full bg-black">
+          <NuxtLink to="/">
+              <img src="/LinTekLogo-darkmode.png" alt="LinTek" class="h-8 w-min-[100%]" />
+          </NuxtLink>
+          <div class="flex items-center justify-self-end">
+              <UButton
+                  color="neutral"
+                  variant="ghost"
+                  icon="i-lucide-search"
+                  @click="openSearch = true"
+                  class="dark"
+                  aria-label="search"
+                />
+                <UButton 
+                  variant="ghost" 
+                  @click="toggleLocale" 
+                  icon="i-lucide-languages" 
+                  color="neutral" 
+                  class="dark"
+                  aria-label="language toggle"
+                  :label="locale"
+                />
+                <UColorModeButton 
+                  variant="ghost"
+                  class="text-neutral-300 hover:bg-neutral-800 active:bg-neutral-800 transition-colors"
+                />
+                <UButton
+                  color="neutral"
+                  variant="ghost"
+                  icon="i-lucide-x"
+                  class="dark"
+                  @click="openHamburger = false"
+                  aria-label="close menu"
+                />
+            </div>
+        </div>
+      </template>
+      <template #body>
+        <nav class="flex flex-col gap-6 w-full">
                     <!-- Use the computed property directly in the template -->
             <UNavigationMenu :items="menuItems" color="primary" variant="link" orientation="vertical" type="multiple" />
-            <USeparator class="my-2" />
-            <div class="flex flex-col gap-2">
+            <USeparator class="my-2 hidden" />
+            <div class="hidden flex flex-col gap-2">
               <UButton
                   color="neutral"
                   variant="soft"
@@ -69,6 +128,8 @@
                   color="neutral"
                   :block="true"
                   aria-label="language toggle"
+                  :label="locale"
+
                 />
                 <UColorModeButton 
                   variant="soft"
@@ -78,7 +139,7 @@
             </div>
         </nav>
       </template>
-    </UDrawer>
+    </UModal>
 
     <UModal v-model:open="openSearch" size="lg" :closeable="true">
             <template #content>
@@ -89,7 +150,7 @@
 
 <script setup>
 
-const { locale, toggleLocale } = useLanguage();
+const { toggleLocale, locale } = useLanguage();
 
 const menuItems = (await useGlobalNavigation()).navbarItems;
 
@@ -97,11 +158,11 @@ const openSearch = ref(false);
 const openHamburger = ref(false);
 
 const content = {
-  "se-SV": {
+  "sv": {
     search: "Sök i LinTek",
     langToggle: "Byt språk till engelska",
   },
-  "en-US": {
+  "en": {
     search: "Search in LinTek",
     langToggle: "Switch language to Swedish",
   }

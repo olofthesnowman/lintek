@@ -7,15 +7,15 @@
                 v-for="(article, index) in articles"
                 :key="index"
                 v-bind="article"
-                :to="`/artiklar/${article.slug}`"
+                :to="`${locale}/nyheter/${article.slug}`"
             />
         </UBlogPosts>
     </UContainer>
 </template>
 
 <script setup>
-const { locale } = useLanguage();
-const title = computed(() =>  { return locale.value === 'sv-SE' ? 'Nyheter' : 'News'; });
+const { fullLocale, locale } = useLanguage();
+const title = computed(() =>  { return fullLocale.value === 'sv-SE' ? 'Nyheter' : 'News'; });
 
 const { getArticleListLocalized } = useArticle();
 const articles = ref(getArticleListLocalized(3));

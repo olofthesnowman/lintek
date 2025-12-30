@@ -46,7 +46,7 @@
 <script setup>
 
 // Use the existing locale composable
-const locale = useLanguage().locale; 
+const locale = useLanguage().fullLocale; 
 //const { $directus, $readItems } = useNuxtApp();
 const route = useRoute();
 

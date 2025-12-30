@@ -4,7 +4,7 @@ export const useGlobalNavigation = async () => {
 
     //const directusUrl = useRuntimeConfig().public.directusUrl;
     const { $directus, $readItems } = useNuxtApp();
-    const { locale } = useLanguage();
+    const { fullLocale } = useLanguage();
 
     // Fetch global navigation data on composable initialization
     const { data: globalData } = await useAsyncData('global-data', async () => {
@@ -24,7 +24,7 @@ export const useGlobalNavigation = async () => {
         if (!data.value?.translations) return [];
 
         const localizedData = data.value.translations.find(
-            (item: any) => item.languages_code === locale.value
+            (item: any) => item.languages_code === fullLocale.value
         );
 
         if (!localizedData?.navigation_menu) return [];
@@ -42,7 +42,7 @@ export const useGlobalNavigation = async () => {
         if (!data.value?.translations) return [];
 
         const localizedData = data.value.translations.find(
-            (item: any) => item.languages_code === locale.value
+            (item: any) => item.languages_code === fullLocale.value
         );
 
         if (!localizedData?.footer_columns) return [];

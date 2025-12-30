@@ -3,7 +3,7 @@ export const useArticle = () => {
 
     const directusUrl = useRuntimeConfig().public.directusUrl;
     const { $directus, $readUsers, $readItems } = useNuxtApp();
-    const { locale } = useLanguage();
+    const locale = useLanguage().fullLocale;
 
     const getAuthorsByIds = async (userIds: string[]) => {
         const validUserIds = [...new Set(userIds)].filter(Boolean);
